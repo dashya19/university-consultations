@@ -5,99 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93d13c4d-95f7-4967-a046-4ba75c9affd0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/UniversityConsultationsApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/config/MvcConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/config/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/controller/ConsultationSignupController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/controller/FileUploadController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/controller/ManagementController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/controller/StudentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/controller/TeacherController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/entity/Consultation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/entity/ConsultationArchive.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/entity/ConsultationSignup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/entity/ConsultationTemplate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/entity/Management.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/entity/Notification.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/entity/Student.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/entity/Teacher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/entity/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/repository/ConsultationArchiveRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/repository/ConsultationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/repository/ConsultationSignupRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/repository/ConsultationTemplateRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/repository/ManagementRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/repository/NotificationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/repository/StudentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/repository/TeacherRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/service/ConsultationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/university/consultations/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/bell-empty.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/calendar-empty.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/close.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/downarrow.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/edit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/email.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/error.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/menu.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/phone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/settings.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/success.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/user.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/images/warning.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/instructionfiles/instruction_consultations.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/instructionfiles/instruction_consultations.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/instructionfiles/instruction_profile.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/instructionfiles/instruction_profile.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/consultationSignup.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/editModal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/fileUpload.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/loginValidation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/logoutConfirm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/managEvent.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/managGlobals.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/managNavigation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/managStudentAnalysis.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/managStudentSearch.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/managTeacherAnalysis.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/managTeacherSearch.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/oneTimeConsultation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/studentArchive.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/studentConsultations.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/studentNotifications.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/switchingTabs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/tableAdapt.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/teacherArchive.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/teacherConsultationModal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/teacherConsultationsUpdater.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/teacherDeleteConsultation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/teacherDeleteOneTime.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/teacherDeleteStudent.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/teacherDeleteTemplate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/teacherNotifications.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/teacherSearch.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/toggleMaxStudents.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/management.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/student.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/teacher.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/00664657-d1d5-4503-bc87-e230e1f01536.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/f8360889-d8ac-4649-8718-f19074159034.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/fcf0a88d-fc0d-4c21-bce1-6ab54e3661a8.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/user.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/student.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/student.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +39,7 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/MyProjects/Java/GraduateWork/UniversityConsultations/src/main/resources/static/images",
     "onboarding.tips.debug.path": "C:/MyProjects/Java/GraduateWork/UniversityConsultations/src/main/java/com/example/Main.java",
