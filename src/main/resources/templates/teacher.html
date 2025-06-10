@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет преподавателя</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/editModal.js" defer></script>
+    <script src="/js/logoutConfirm.js" defer></script>
+    <script src="/js/switchingTabs.js" defer></script>
+    <script src="/js/tableAdapt.js" defer></script>
+    <script src="/js/fileUpload.js" defer></script>
+
+    <script src="/js/toggleMaxStudents.js" defer></script>
+    <script src="/js/teacherConsultationModal.js" defer></script>
+    <script src="/js/teacherArchive.js" defer></script>
+    <script src="/js/teacherDeleteTemplate.js" defer></script>
+    <script src="/js/teacherNotifications.js" defer></script>
+    <script src="/js/teacherConsultationsUpdater.js" defer></script>
+    <script src="/js/oneTimeConsultation.js" defer></script>
+    <script src="/js/teacherDeleteOneTime.js" defer></script>
+    <script src="/js/teacherDeleteConsultation.js" defer></script>
+    <script src="/js/teacherDeleteStudent.js" defer></script>
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-left">
+            <img src="/images/logo.png" alt="Логотип" class="logo">
+        </div>
+        <div class="header-center">
+            <span class="university-text">ФГБОУ ВО "Пензенский государственный университет"</span>
+        </div>
+        <div class="header-right">
+                <span class="menu-text" th:text="${teacher.lastName} + ' ' +
+                ${teacher.firstName.substring(0, 1)} + '.' +
+                (${teacher.patronymic} != null ? ' ' + ${teacher.patronymic.substring(0, 1)} + '.' : '')">
+                </span>
+            <div class="profile-menu">
+                <div class="menu-item profile-trigger">
+                    <img th:src="${teacher.photoPath != null} ?
+            @{'/uploads/' + ${teacher.photoPath}} :
+            @{'/images/user.png'}"
+                         alt="Профиль" class="profile-pic">
+                    <img src="/images/downarrow.png" alt="Стрелка вниз" class="arrow-icon">
+                </div>
+                <div class="dropdown-menu">
+                    <a href="/teacher/dashboard" class="dropdown-item">Профиль</a>
+                    <a href="/logout" class="dropdown-item">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="centered-text-lk">
+        Личный кабинет преподавателя
+    </div>
+    <div class="user-info-container">
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div class="left-column">
+            <div class="info-box top-left-box">
+                <div class="section-title">Профиль</div>
+                <div class="profile-image-container">
+                    <img th:src="${teacher.photoPath != null} ?
+            @{'/uploads/' + ${teacher.photoPath}} :
+            @{'/images/user.png'}"
+                         class="profile-image">
+                </div>
+                <div class="upload-photo-wrapper">
+                    <form th:action="@{/uploadPhoto}" method="post" enctype="multipart/form-data"
+                          id="uploadForm" onsubmit="return validateFile()">
+                        <input type="hidden" name="role" value="teacher">
+                        <label for="file-upload" class="upload-photo">
+                            <span>Загрузить фото</span>
+                            <img src="/images/edit.png" alt="Редактировать" class="upload-icon">
+                        </label>
+                        <input id="file-upload" type="file" name="file" style="display: none;"
+                               accept="image/jpeg,image/png" onchange="preValidateFile(this)">
+                    </form>
+                    <div class="photo-tooltip">JPG, JPEG или PNG, размер не более 2MB</div>
+                </div>
+                <div class="photo-info" th:if="${teacher.eiosId}">
+                    ID ЭИОС: <span th:text="${teacher.eiosId}"></span>
+                </div>
+            </div>
+            <div class="info-box bottom-left-box contacts-box">
+                <div class="section-title">Контакты</div>
+                <div class="contact-item">
+                    <div class="contact-left-group">
+                        <img src="/images/email.png" alt="Email" class="contact-icon">
+                        <span class="contact-name">Почта</span>
+                    </div>
+                    <div class="contact-right-group">
+                        <span th:text="${teacher.email} ?: 'Не указано'" class="contact-link"></span>
+                        <div class="edit-group" onclick="showEditModal('email')"
+                             th:attr="data-current-value=${teacher.email ?: ''}">
+                            <span class="edit-text">Изменить</span>
+                            <img src="/images/edit.png" alt="Редактировать" class="edit-icon">
+                            <div class="edit-tooltip">Нажмите, чтобы изменить email</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-left-group">
+                        <img src="/images/phone.png" alt="Телефон" class="contact-icon">
+                        <span class="contact-name">Телефон</span>
+                    </div>
+                    <div class="contact-right-group">
+                        <span th:text="${teacher.phone} ?: 'Не указано'" class="contact-link"></span>
+                        <div class="edit-group" onclick="showEditModal('phone')"
+                             th:attr="data-current-value=${teacher.phone ?: ''}">
+                            <span class="edit-text">Изменить</span>
+                            <img src="/images/edit.png" alt="Редактировать" class="edit-icon">
+                            <div class="edit-tooltip">Нажмите, чтобы изменить телефон</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="info-box right-box" style="height: 100%;">
+                <div class="section-title">Подробная информация</div>
+                <table class="info-table">
+                    <tr>
+                        <td>Фамилия</td>
+                        <td th:text="${teacher.lastName}"></td>
+                    </tr>
+                    <tr>
+                        <td>Имя</td>
+                        <td th:text="${teacher.firstName}"></td>
+                    </tr>
+                    <tr>
+                        <td>Отчество</td>
+                        <td th:text="${teacher.patronymic}"></td>
+                    </tr>
+                    <tr>
+                        <td>Дата рождения</td>
+                        <td th:text="${#temporals.format(teacher.birthDate, 'dd.MM.yyyy')} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Ученая степень</td>
+                        <td th:text="${teacher.academicDegree} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Ученое звание</td>
+                        <td th:text="${teacher.academicTitle} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Должность</td>
+                        <td th:text="${teacher.position} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Табельный номер</td>
+                        <td th:text="${teacher.registrationNumber} ?: '-'"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="editFieldModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeFieldModal()">&times;</span>
+            <form id="editFieldForm" th:action="@{/teacher/updateFields}" method="post">
+                <div class="form-group">
+                    <label id="fieldLabel" for="fieldInput"></label>
+                    <input type="tel" class="form-control" id="fieldInput" name="fieldInput"
+                           placeholder="8 (XXX) XXX-XX-XX" value="8">
+                </div>
+                <input type="hidden" id="fieldType" name="fieldType">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+    <div class="bottom-container">
+        <div class="bottom-box active" data-tab="consultation">
+            <div class="bottom-box-title">Консультация</div>
+        </div>
+        <div class="bottom-box" data-tab="records">
+            <div class="bottom-box-title">Записи</div>
+        </div>
+        <div class="bottom-box" data-tab="archive-records">
+            <div class="bottom-box-title">Архив записей</div>
+        </div>
+        <div class="bottom-box" data-tab="notifications">
+            <div class="bottom-box-title">Уведомления</div>
+            <div class="notification-badge" id="unreadCountBadge"
+                 th:text="${unreadCount}"
+                 th:if="${unreadCount > 0}"></div>
+        </div>
+    </div>
+    <div class="content-container">
+        <div class="content-box active" id="consultation-content">
+            <div class="consultation-header">
+                <div class="section-title">Мои шаблоны консультаций</div>
+            </div>
+            <div class="consultation-header">
+                <button class="btn btn-primary" id="createConsultationBtn">Создать регулярную консультацию</button>
+                <button class="btn btn-primary" id="createOneTimeConsultationBtn">Создать разовую консультацию</button>
+            </div>
+            <div class="consultation-section">
+                <h3>Регулярные консультации</h3>
+                <div th:if="${regularConsultationTemplates != null and !regularConsultationTemplates.empty}" class="consultations-table-container">
+                    <table class="consultations-table">
+                        <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>День недели</th>
+                            <th>Время начала</th>
+                            <th>Время окончания</th>
+                            <th>Аудитория</th>
+                            <th>Макс. студентов</th>
+                            <th>Дата завершения</th>
+                            <th>Действие</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="template, iter : ${regularConsultationTemplates}">
+                            <td th:text="${iter.index + 1}"></td>
+                            <td th:text="${{
+                        'MONDAY': 'Понедельник',
+                        'TUESDAY': 'Вторник',
+                        'WEDNESDAY': 'Среда',
+                        'THURSDAY': 'Четверг',
+                        'FRIDAY': 'Пятница',
+                        'SATURDAY': 'Суббота',
+                        'SUNDAY': 'Воскресенье'
+                    }[template.dayOfWeek.toString()]}"></td>
+                            <td th:text="${#temporals.format(template.startTime, 'HH:mm')}"></td>
+                            <td th:text="${#temporals.format(template.endTime, 'HH:mm')}"></td>
+                            <td th:text="${template.room}"></td>
+                            <td th:text="${template.maxStudents == 10000} ? 'не ограничено' : ${template.maxStudents}"></td>
+                            <td th:if="${template.expirationDateTime != null}"
+                                th:text="${#temporals.format(template.expirationDateTime, 'dd.MM.yyyy HH:mm')}"></td>
+                            <td th:unless="${template.expirationDateTime != null}">-</td>
+                            <td>
+                                <button class="btn-action delete-btn"
+                                        th:attr="data-template-id=${template.id}"
+                                        onclick="deleteConsultationTemplate(this)">Удалить</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div th:each="entry : ${consultationsByTemplate}" class="template-consultations">
+                        <h4>Консультация:
+                            <span th:text="${{
+                        'MONDAY': 'Понедельник',
+                        'TUESDAY': 'Вторник',
+                        'WEDNESDAY': 'Среда',
+                        'THURSDAY': 'Четверг',
+                        'FRIDAY': 'Пятница',
+                        'SATURDAY': 'Суббота',
+                        'SUNDAY': 'Воскресенье'
+                    }[entry.key.dayOfWeek.toString()]}"></span>
+                            <span th:text="${#temporals.format(entry.key.startTime, 'HH:mm')}"></span>-
+                            <span th:text="${#temporals.format(entry.key.endTime, 'HH:mm')}"></span>
+                        </h4>
+                        <div th:if="${!entry.value.empty}" class="consultations-table-container">
+                            <table class="consultations-table">
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Дата</th>
+                                    <th>Время начала</th>
+                                    <th>Время окончания</th>
+                                    <th>Аудитория</th>
+                                    <th>Макс. студентов</th>
+                                    <th>Действие</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="consultation, iter : ${entry.value}">
+                                    <td th:text="${iter.index + 1}"></td>
+                                    <td th:text="${#temporals.format(consultation.consultationDate, 'dd.MM.yyyy')}"></td>
+                                    <td th:text="${#temporals.format(consultation.startTime, 'HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(consultation.endTime, 'HH:mm')}"></td>
+                                    <td th:text="${consultation.room}"></td>
+                                    <td th:text="${consultation.maxStudents == 10000} ? 'не ограничено' : ${consultation.maxStudents}"></td>
+                                    <td>
+                                        <button class="btn-action delete-btn"
+                                                th:attr="data-consultation-id=${consultation.id}"
+                                                onclick="deleteConsultation(this)">Удалить</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${entry.value.empty}" class="no-consultations-message">
+                            <p>Нет запланированных консультаций по этому шаблону</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-consultations-message" th:unless="${regularConsultationTemplates != null and !regularConsultationTemplates.empty}">
+                    <img src="/images/calendar-empty.png" alt="Нет консультаций" class="empty-icon">
+                    <p>Регулярных консультаций пока нет</p>
+                </div>
+            </div>
+            <div class="consultation-section">
+                <h3>Разовые консультации</h3>
+                <div th:if="${oneTimeConsultations != null and !oneTimeConsultations.empty}" class="consultations-table-container">
+                    <table class="consultations-table">
+                        <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Дата</th>
+                            <th>Время начала</th>
+                            <th>Время окончания</th>
+                            <th>Аудитория</th>
+                            <th>Макс. студентов</th>
+                            <th>Действие</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="consultation, iter : ${oneTimeConsultations}">
+                            <td th:text="${iter.index + 1}"></td>
+                            <td th:text="${#temporals.format(consultation.consultationDate, 'dd.MM.yyyy')}"></td>
+                            <td th:text="${#temporals.format(consultation.startTime, 'HH:mm')}"></td>
+                            <td th:text="${#temporals.format(consultation.endTime, 'HH:mm')}"></td>
+                            <td th:text="${consultation.room}"></td>
+                            <td th:text="${consultation.maxStudents == 10000} ? 'не ограничено' : ${consultation.maxStudents}"></td>
+                            <td>
+                                <button class="btn-action delete-btn"
+                                        th:attr="data-consultation-id=${consultation.id}"
+                                        onclick="deleteOneTimeConsultation(this)">Удалить</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="no-consultations-message" th:unless="${oneTimeConsultations != null and !oneTimeConsultations.empty}">
+                    <img src="/images/calendar-empty.png" alt="Нет консультаций" class="empty-icon">
+                    <p>Разовых консультаций пока нет</p>
+                </div>
+            </div>
+        </div>
+        <div class="content-box" id="records-content">
+            <div class="consultation-header">
+                <div class="section-title">Записи студентов</div>
+            </div>
+            <div th:if="${consultations != null and !consultations.empty}">
+                <div th:each="consultation : ${consultations}" class="consultation-record-block">
+                    <div class="consultation-info">
+                        <p><strong>Дата:</strong> <span th:text="${#temporals.format(consultation.consultationDate, 'dd.MM.yyyy')}"></span></p>
+                        <p><strong>Время:</strong>
+                            <span th:text="${#temporals.format(consultation.startTime, 'HH:mm')}"></span> -
+                            <span th:text="${#temporals.format(consultation.endTime, 'HH:mm')}"></span>
+                        </p>
+                        <p><strong>Аудитория:</strong> <span th:text="${consultation.room}"></span></p>
+                        <p><strong>Макс. студентов:</strong> <span th:text="${consultation.maxStudents == 10000} ? 'не ограничено' : ${consultation.maxStudents}"></span></p>
+                    </div>
+                    <div class="consultations-table-container" th:if="${signupsByConsultation.get(consultation.id) != null and !signupsByConsultation.get(consultation.id).empty}">
+                        <table class="consultations-table">
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Фамилия</th>
+                                <th>Имя</th>
+                                <th>Отчество</th>
+                                <th>Группа</th>
+                                <th>Причина записи</th>
+                                <th>Действие</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="signup, iter : ${signupsByConsultation.get(consultation.id)}">
+                                <td th:text="${iter.index + 1}"></td>
+                                <td th:text="${signup.student.lastName}"></td>
+                                <td th:text="${signup.student.firstName}"></td>
+                                <td th:text="${signup.student.patronymic}"></td>
+                                <td th:text="${signup.student.groupName}"></td>
+                                <td th:text="${signup.reason}"></td>
+                                <td>
+                                    <button class="btn-action delete-btn"
+                                            th:attr="data-signup-id=${signup.id}"
+                                            onclick="deleteStudentSignup(this)">Удалить</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="no-records-message" th:unless="${signupsByConsultation.get(consultation.id) != null and !signupsByConsultation.get(consultation.id).empty}">
+                        <p>Нет записей на эту консультацию</p>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+            <div class="no-consultations-message" th:unless="${consultations != null and !consultations.empty}">
+                <img src="/images/calendar-empty.png" alt="Нет записей" class="empty-icon">
+                <p>Записей пока нет</p>
+            </div>
+        </div>
+        <div class="content-box" id="archive-records-content">
+            <div class="consultation-header">
+                <div class="section-title">Архив записей студентов</div>
+            </div>
+            <div class="archive-container">
+                <div class="consultations-table-container" id="teacherArchiveTableContainer" style="display: none;">
+                    <table class="consultations-table" id="teacherArchiveTable">
+                        <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Дата</th>
+                            <th>Время начала</th>
+                            <th>Время окончания</th>
+                            <th>Аудитория</th>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Группа</th>
+                            <th>Причина</th>
+                            <th>Посещаемость</th>
+                            <th>Сдача задолженности</th>
+                            <th>Отзыв</th>
+                            <th>Действие</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Данные будут загружаться через JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="no-consultations-message" id="noTeacherArchiveMessage" style="display: none;">
+                <img src="/images/calendar-empty.png" alt="Нет записей" class="empty-icon">
+                <p>Архив консультаций пуст</p>
+            </div>
+        </div>
+        <div class="content-box" id="notifications-content">
+            <div class="consultation-header">
+                <div class="section-title">Мои уведомления</div>
+                <div class="consultation-header">
+                    <button class="btn btn-primary" id="markAllAsReadBtn">Отметить все как прочитанные</button>
+                </div>
+            </div>
+            <div class="notifications-container">
+                <div th:each="notification : ${notifications}" class="notification" th:classappend="${notification.isRead} ? 'read' : 'unread'">
+                    <div class="notification-content">
+                        <div class="notification-message" th:text="${notification.message}"></div>
+                        <div class="notification-time" th:text="${#temporals.format(notification.createdAt, 'dd.MM.yyyy HH:mm')}"></div>
+                    </div>
+                    <div class="notification-actions" th:unless="${notification.isRead}">
+                        <button class="btn-action mark-as-read-btn" th:attr="data-notification-id=${notification.id}">
+                            Отметить как прочитанное
+                        </button>
+                    </div>
+                </div>
+                <div class="no-notifications-message" th:if="${notifications.empty}">
+                    <img src="/images/bell-empty.png" alt="Нет уведомлений" class="empty-icon">
+                    <p>У вас нет уведомлений</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="createConsultationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeConsultationModal()">&times;</span>
+                <div class="modal-title">Создание регулярной консультации</div>
+            </div>
+            <form id="consultationForm">
+                <div class="form-group">
+                    <label for="consultationDay">День недели:</label>
+                    <select id="consultationDay" class="form-control" required>
+                        <option value="">Выберите день</option>
+                        <option value="1">Понедельник</option>
+                        <option value="2">Вторник</option>
+                        <option value="3">Среда</option>
+                        <option value="4">Четверг</option>
+                        <option value="5">Пятница</option>
+                        <option value="6">Суббота</option>
+                        <option value="7">Воскресенье</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="isBiWeekly" class="checkbox-input" onchange="toggleBiWeeklyOptions(this)">
+                        <label for="isBiWeekly" class="checkbox-label">Создавать консультации через неделю</label>
+                    </div>
+                </div>
+                <div id="biWeeklyOptions" style="display: none; margin-left: 20px;">
+                    <div class="form-group">
+                        <label>Начать с:</label>
+                        <div class="radio-wrapper">
+                            <input type="radio" id="startThisWeek" name="startWeek" value="false" checked>
+                            <label for="startThisWeek">Этой недели</label>
+                        </div>
+                        <div class="radio-wrapper">
+                            <input type="radio" id="startNextWeek" name="startWeek" value="true">
+                            <label for="startNextWeek">Следующей недели</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="consultationStartTime">Время начала:</label>
+                    <input type="time" id="consultationStartTime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="consultationEndTime">Время окончания:</label>
+                    <input type="time" id="consultationEndTime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="consultationRoom">Аудитория:</label>
+                    <input type="text" id="consultationRoom" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="consultationMaxStudents">Макс. количество студентов:</label>
+                    <input type="number" id="consultationMaxStudents" class="form-control" min="1" max="10000" value="5" required>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="unlimitedStudents" class="checkbox-input" onchange="toggleMaxStudents(this, 'consultationMaxStudents')">
+                        <label for="unlimitedStudents" class="checkbox-label">Без ограничения количества студентов</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="expirationDate">Дата автоматического удаления (необязательно):</label>
+                    <input type="date" id="expirationDate" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="expirationTime">Время автоматического удаления (необязательно):</label>
+                    <input type="time" id="expirationTime" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Создать консультацию
+                </button>
+            </form>
+        </div>
+    </div>
+    <div id="createOneTimeConsultationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeOneTimeConsultationModal()">&times;</span>
+                <div class="modal-title">Создание разовой консультации</div>
+            </div>
+            <form id="oneTimeConsultationForm">
+                <div class="form-group">
+                    <label for="oneTimeConsultationDate">Дата консультации:</label>
+                    <input type="date" id="oneTimeConsultationDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="oneTimeConsultationStartTime">Время начала:</label>
+                    <input type="time" id="oneTimeConsultationStartTime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="oneTimeConsultationEndTime">Время окончания:</label>
+                    <input type="time" id="oneTimeConsultationEndTime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="oneTimeConsultationRoom">Аудитория:</label>
+                    <input type="text" id="oneTimeConsultationRoom" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="oneTimeConsultationMaxStudents">Макс. количество студентов:</label>
+                    <input type="number" id="oneTimeConsultationMaxStudents" class="form-control" min="1" max="10000" value="5" required>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="unlimitedStudentsOneTime" class="checkbox-input" onchange="toggleMaxStudents(this, 'oneTimeConsultationMaxStudents')">
+                        <label for="unlimitedStudentsOneTime" class="checkbox-label">Без ограничения количества студентов</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Создать консультацию
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="cancelSignupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCancelModal()">&times;</span>
+            <form id="cancelSignupForm">
+                <div class="form-group">
+                    <label for="cancelReason">Причина отмены записи</label>
+                    <textarea id="cancelReason" name="reason" class="form-control" rows="3" required></textarea>
+                </div>
+                <input type="hidden" id="signupIdInput">
+                <button type="submit" class="btn btn-primary">Подтвердить отмену</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет руководства</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/editModal.js" defer></script>
+    <script src="/js/logoutConfirm.js" defer></script>
+    <script src="/js/switchingTabs.js" defer></script>
+    <script src="/js/tableAdapt.js" defer></script>
+    <script src="/js/fileUpload.js" defer></script>
+    <script src="/js/managGlobals.js" defer></script>
+    <script src="/js/managNavigation.js" defer></script>
+    <script src="/js/managEvent.js" defer></script>
+    <script src="/js/managStudentSearch.js" defer></script>
+    <script src="/js/managStudentAnalysis.js" defer></script>
+    <script src="/js/managTeacherSearch.js" defer></script>
+    <script src="/js/managTeacherAnalysis.js" defer></script>
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-left">
+            <img src="/images/logo.png" alt="Логотип" class="logo">
+        </div>
+        <div class="header-center">
+            <span class="university-text">ФГБОУ ВО "Пензенский государственный университет"</span>
+        </div>
+        <div class="header-right">
+                <span class="menu-text" th:text="${management.lastName} + ' ' +
+                ${management.firstName.substring(0, 1)} + '.' +
+                (${management.patronymic} != null ? ' ' + ${management.patronymic.substring(0, 1)} + '.' : '')">
+                </span>
+            <div class="profile-menu">
+                <div class="menu-item profile-trigger">
+                    <img th:src="${management.photoPath != null} ?
+            @{'/uploads/' + ${management.photoPath}} :
+            @{'/images/user.png'}"
+                         alt="Профиль" class="profile-pic">
+                    <img src="/images/downarrow.png" alt="Стрелка вниз" class="arrow-icon">
+                </div>
+                <div class="dropdown-menu">
+                    <a href="/management/dashboard" class="dropdown-item">Профиль</a>
+                    <a href="/logout" class="dropdown-item">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="centered-text-lk">
+        Личный кабинет руководства
+    </div>
+    <div class="user-info-container">
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div class="left-column">
+            <div class="info-box top-left-box">
+                <div class="section-title">Профиль</div>
+                <div class="profile-image-container">
+                    <img th:src="${management.photoPath != null} ?
+            @{'/uploads/' + ${management.photoPath}} :
+            @{'/images/user.png'}"
+                         class="profile-image">
+                </div>
+                <div class="upload-photo-wrapper">
+                    <form th:action="@{/uploadPhoto}" method="post" enctype="multipart/form-data"
+                          id="uploadForm" onsubmit="return validateFile()">
+                        <input type="hidden" name="role" value="management">
+                        <label for="file-upload" class="upload-photo">
+                            <span>Загрузить фото</span>
+                            <img src="/images/edit.png" alt="Редактировать" class="upload-icon">
+                        </label>
+                        <input id="file-upload" type="file" name="file" style="display: none;"
+                               accept="image/jpeg,image/png" onchange="preValidateFile(this)">
+                    </form>
+                    <div class="photo-tooltip">JPG, JPEG или PNG, размер не более 2MB</div>
+                </div>
+                <div class="photo-info" th:if="${management.eiosId}">
+                    ID ЭИОС: <span th:text="${management.eiosId}"></span>
+                </div>
+            </div>
+            <div class="info-box bottom-left-box contacts-box">
+                <div class="section-title">Контакты</div>
+                <div class="contact-item">
+                    <div class="contact-left-group">
+                        <img src="/images/email.png" alt="Email" class="contact-icon">
+                        <span class="contact-name">Почта</span>
+                    </div>
+                    <div class="contact-right-group">
+                        <span th:text="${management.email} ?: 'Не указано'" class="contact-link"></span>
+                        <div class="edit-group" onclick="showEditModal('email')"
+                             th:attr="data-current-value=${management.email ?: ''}">
+                            <span class="edit-text">Изменить</span>
+                            <img src="/images/edit.png" alt="Редактировать" class="edit-icon">
+                            <div class="edit-tooltip">Нажмите, чтобы изменить email</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-left-group">
+                        <img src="/images/phone.png" alt="Телефон" class="contact-icon">
+                        <span class="contact-name">Телефон</span>
+                    </div>
+                    <div class="contact-right-group">
+                        <span th:text="${management.phone} ?: 'Не указано'" class="contact-link"></span>
+                        <div class="edit-group" onclick="showEditModal('phone')"
+                             th:attr="data-current-value=${management.phone ?: ''}">
+                            <span class="edit-text">Изменить</span>
+                            <img src="/images/edit.png" alt="Редактировать" class="edit-icon">
+                            <div class="edit-tooltip">Нажмите, чтобы изменить телефон</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="info-box right-box" style="height: 100%;">
+                <div class="section-title">Подробная информация</div>
+                <table class="info-table">
+                    <tr>
+                        <td>Фамилия</td>
+                        <td th:text="${management.lastName}"></td>
+                    </tr>
+                    <tr>
+                        <td>Имя</td>
+                        <td th:text="${management.firstName}"></td>
+                    </tr>
+                    <tr>
+                        <td>Отчество</td>
+                        <td th:text="${management.patronymic}"></td>
+                    </tr>
+                    <tr>
+                        <td>Дата рождения</td>
+                        <td th:text="${#temporals.format(management.birthDate, 'dd.MM.yyyy')} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Ученая степень</td>
+                        <td th:text="${management.academicDegree} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Ученое звание</td>
+                        <td th:text="${management.academicTitle} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Должность</td>
+                        <td th:text="${management.position} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Табельный номер</td>
+                        <td th:text="${management.registrationNumber} ?: '-'"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="editFieldModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeFieldModal()">&times;</span>
+            <form id="editFieldForm" th:action="@{/management/updateFields}" method="post">
+                <div class="form-group">
+                    <label id="fieldLabel" for="fieldInput"></label>
+                    <input type="tel" class="form-control" id="fieldInput" name="fieldInput"
+                           placeholder="8 (XXX) XXX-XX-XX" value="8">
+                </div>
+                <input type="hidden" id="fieldType" name="fieldType">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+    <div class="bottom-container">
+        <div class="bottom-box active" data-tab="students">
+            <div class="bottom-box-title">Информация о студентах</div>
+        </div>
+        <div class="bottom-box" data-tab="teachers">
+            <div class="bottom-box-title">Информация о преподавателях</div>
+        </div>
+    </div>
+    <div class="content-container">
+        <div class="content-box active" id="students-content">
+            <div class="consultation-main-content">
+                <div class="consultation-header">
+                    <div class="section-title">Информация студента</div>
+                </div>
+                <div class="consultation-header">
+                    <button class="btn btn-primary" id="findStudentBtn">Найти студента</button>
+                </div>
+            </div>
+            <div class="consultation-registration-section" id="studentSearchSection" style="display: none;">
+                <div class="breadcrumb-nav">
+                    <span class="breadcrumb-item" id="backToProfileFromSearch" style="cursor:pointer;">Профиль</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item active">Поиск студента</span>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="studentSearchInput" placeholder="Введите ФИО студента..." class="search-input">
+                </div>
+                <div id="studentResults" class="student-results">
+                    <!-- Здесь будут подгружаться студенты -->
+                </div>
+            </div>
+            <div class="teacher-consultation-section" id="studentArchiveSection" style="display: none;">
+                <div class="breadcrumb-nav">
+                    <span class="breadcrumb-item" id="backToProfileFromArchive" style="cursor:pointer;">Профиль</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item" id="backToSearchFromArchive" style="cursor:pointer;">Поиск студента</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item active">Архив записей студента</span>
+                </div>
+                <div class="student-header">
+                    <h3 id="selectedStudentName" style="margin-top: 15px;"></h3>
+                    <button class="btn btn-primary" id="viewStudentAnalysisBtn">Посмотреть статистику</button>
+                </div>
+                <div class="consultations-table-container">
+                    <table class="consultations-table" id="studentArchiveTable">
+                        <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Дата</th>
+                            <th>Время начала</th>
+                            <th>Время окончания</th>
+                            <th>Аудитория</th>
+                            <th>Преподаватель</th>
+                            <th>Причина</th>
+                            <th>Посещаемость</th>
+                            <th>Сдача задолженности</th>
+                            <th>Отзыв</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Данные будут загружаться через JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="no-consultations-message" id="noStudentArchiveMessage" style="display: none;">
+                    <img src="/images/calendar-empty.png" alt="Нет записей" class="empty-icon">
+                    <p>Архив консультаций пуст</p>
+                </div>
+            </div>
+            <div class="teacher-consultation-section" id="studentAnalysisSection" style="display: none;">
+                <div class="breadcrumb-nav">
+                    <span class="breadcrumb-item" id="backToProfileFromAnalysis" style="cursor:pointer;">Профиль</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item" id="backToSearchFromAnalysis" style="cursor:pointer;">Поиск студента</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item" id="backToArchiveFromAnalysis" style="cursor:pointer;">Архив записей студента</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item active">Статистика</span>
+                </div>
+                <h3 id="studentAnalysisName"></h3>
+                <div class="analysis-content">
+                    <h4 class="stats-header">Статистика посещаемости</h4>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalConsultations">0</div>
+                            <div class="stat-label">Всего консультаций</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="attendedConsultations">0</div>
+                            <div class="stat-label">Посещено</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="notAttendedConsultations">0</div>
+                            <div class="stat-label">Пропущено</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="attendancePercentage">0%</div>
+                            <div class="stat-label">Процент посещаемости</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="attendanceChart"></canvas>
+                    </div>
+                    <h4 class="stats-header">Статистика сдачи задолженностей</h4>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalDebts">0</div>
+                            <div class="stat-label">Всего консультаций по задолженностям</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="passedDebts">0</div>
+                            <div class="stat-label">Сдано</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="failedDebts">0</div>
+                            <div class="stat-label">Не сдано</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="passedPercentage">0%</div>
+                            <div class="stat-label">Процент сдачи</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="debtChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-box" id="teachers-content">
+            <div class="consultation-main-content">
+                <div class="consultation-header">
+                    <div class="section-title">Информация преподавателя</div>
+                </div>
+                <div class="consultation-header">
+                    <button class="btn btn-primary" id="findTeacherBtn">Найти преподавателя</button>
+                </div>
+            </div>
+            <div class="consultation-registration-section" id="teacherSearchSection" style="display: none;">
+                <div class="breadcrumb-nav">
+                    <span class="breadcrumb-item" id="backToProfileFromTeacherSearch" style="cursor:pointer;">Профиль</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item active">Поиск преподавателя</span>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="teacherSearchInput" placeholder="Введите ФИО преподавателя..." class="search-input">
+                </div>
+                <div id="teacherResults" class="teacher-results">
+                    <!-- Здесь будут подгружаться преподаватели -->
+                </div>
+            </div>
+            <div class="teacher-consultation-section" id="teacherArchiveSection" style="display: none;">
+                <div class="breadcrumb-nav">
+                    <span class="breadcrumb-item" id="backToProfileFromTeacherArchive" style="cursor:pointer;">Профиль</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item" id="backToTeacherSearchFromArchive" style="cursor:pointer;">Поиск преподавателя</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item active">Архив записей преподавателя</span>
+                </div>
+                <div class="teacher-header">
+                    <h3 id="selectedTeacherName" style="margin-top: 15px;"></h3>
+                    <button class="btn btn-primary" id="viewTeacherAnalysisBtn">Посмотреть статистику</button>
+                </div>
+                <div class="consultations-table-container">
+                    <table class="consultations-table" id="teacherArchiveTable">
+                        <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Дата</th>
+                            <th>Время начала</th>
+                            <th>Время окончания</th>
+                            <th>Аудитория</th>
+                            <th>Студент</th>
+                            <th>Группа</th>
+                            <th>Причина</th>
+                            <th>Посещаемость</th>
+                            <th>Сдача задолженности</th>
+                            <th>Отзыв</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Данные будут загружаться через JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="no-consultations-message" id="noTeacherArchiveMessage" style="display: none;">
+                    <img src="/images/calendar-empty.png" alt="Нет записей" class="empty-icon">
+                    <p>Архив консультаций пуст</p>
+                </div>
+            </div>
+            <div class="teacher-consultation-section" id="teacherAnalysisSection" style="display: none;">
+                <div class="breadcrumb-nav">
+                    <span class="breadcrumb-item" id="backToProfileFromTeacherAnalysis" style="cursor:pointer;">Профиль</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item" id="backToTeacherSearchFromAnalysis" style="cursor:pointer;">Поиск преподавателя</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item" id="backToTeacherArchiveFromAnalysis" style="cursor:pointer;">Архив записей преподавателя</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item active">Статистика</span>
+                </div>
+                <h3 id="teacherAnalysisName"></h3>
+                <div class="analysis-content">
+                    <h4 class="stats-header">Статистика посещаемости</h4>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <div class="stat-value" id="teacherTotalConsultations">0</div>
+                            <div class="stat-label">Всего консультаций</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="teacherAttendedConsultations">0</div>
+                            <div class="stat-label">Посещено студентами</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="teacherNotAttendedConsultations">0</div>
+                            <div class="stat-label">Пропущено студентами</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="teacherAttendancePercentage">0%</div>
+                            <div class="stat-label">Процент посещаемости</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="teacherAttendanceChart"></canvas>
+                    </div>
+                    <h4 class="stats-header">Статистика сдачи задолженностей</h4>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <div class="stat-value" id="teacherTotalDebts">0</div>
+                            <div class="stat-label">Всего консультаций по задолженностям</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="teacherPassedDebts">0</div>
+                            <div class="stat-label">Сдано студентами</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="teacherFailedDebts">0</div>
+                            <div class="stat-label">Не сдано студентами</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="teacherPassedPercentage">0%</div>
+                            <div class="stat-label">Процент сдачи</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="teacherDebtChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

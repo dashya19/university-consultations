@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет пользователя</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/editModal.js" defer></script>
+    <script src="/js/logoutConfirm.js" defer></script>
+    <script src="/js/switchingTabs.js" defer></script>
+    <script src="/js/tableAdapt.js" defer></script>
+    <script src="/js/fileUpload.js" defer></script>
+    <script src="/js/teacherSearch.js" defer></script>
+    <script src="/js/consultationSignup.js" defer></script>
+    <script src="/js/studentArchive.js" defer></script>
+    <script src="/js/studentNotifications.js" defer></script>
+    <script src="/js/studentConsultations.js" defer></script>
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-left">
+            <img src="/images/logo.png" alt="Логотип" class="logo">
+        </div>
+        <div class="header-center">
+            <span class="university-text">ФГБОУ ВО "Пензенский государственный университет"</span>
+        </div>
+        <div class="header-right">
+                <span class="menu-text" th:text="${student.lastName} + ' ' +
+                ${student.firstName.substring(0, 1)} + '.' +
+                (${student.patronymic} != null ? ' ' + ${student.patronymic.substring(0, 1)} + '.' : '')">
+                </span>
+            <div class="profile-menu">
+                <div class="menu-item profile-trigger">
+                    <img th:src="${student.photoPath != null} ?
+            @{'/uploads/' + ${student.photoPath}} :
+            @{'/images/user.png'}"
+                         alt="Профиль" class="profile-pic">
+                    <img src="/images/downarrow.png" alt="Стрелка вниз" class="arrow-icon">
+                </div>
+                <div class="dropdown-menu">
+                    <a href="/student/dashboard" class="dropdown-item">Профиль</a>
+                    <a href="/logout" class="dropdown-item">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="centered-text-lk">
+        Личный кабинет студента
+    </div>
+    <div class="user-info-container">
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div class="left-column">
+            <div class="info-box top-left-box">
+                <div class="section-title">Профиль</div>
+                <div class="profile-image-container">
+                    <img th:src="${student.photoPath != null} ?
+            @{'/uploads/' + ${student.photoPath}} :
+            @{'/images/user.png'}"
+                         class="profile-image">
+                </div>
+                <div class="upload-photo-wrapper">
+                    <form th:action="@{/uploadPhoto}" method="post" enctype="multipart/form-data"
+                          id="uploadForm" onsubmit="return validateFile()">
+                        <input type="hidden" name="role" value="student">
+                        <label for="file-upload" class="upload-photo">
+                            <span>Загрузить фото</span>
+                            <img src="/images/edit.png" alt="Редактировать" class="upload-icon">
+                        </label>
+                        <input id="file-upload" type="file" name="file" style="display: none;"
+                               accept="image/jpeg,image/png" onchange="preValidateFile(this)">
+                    </form>
+                    <div class="photo-tooltip">JPG, JPEG или PNG, размер не более 2MB</div>
+                </div>
+                <div class="photo-info">
+                    ID ЭИОС: <span th:text="${student.eiosId}">517710386</span>
+                </div>
+            </div>
+            <div class="info-box bottom-left-box contacts-box">
+                <div class="section-title">Контакты</div>
+                <div class="contact-item">
+                    <div class="contact-left-group">
+                        <img src="/images/email.png" alt="Email" class="contact-icon">
+                        <span class="contact-name">Почта</span>
+                    </div>
+                    <div class="contact-right-group">
+                        <span th:text="${student.email} ?: 'Не указано'" class="contact-link"></span>
+                        <div class="edit-group" onclick="showEditModal('email')"
+                             th:attr="data-current-value=${student.email ?: ''}">
+                            <span class="edit-text">Изменить</span>
+                            <img src="/images/edit.png" alt="Редактировать" class="edit-icon">
+                            <div class="edit-tooltip">Нажмите, чтобы изменить email</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-left-group">
+                        <img src="/images/phone.png" alt="Телефон" class="contact-icon">
+                        <span class="contact-name">Телефон</span>
+                    </div>
+                    <div class="contact-right-group">
+                        <span th:text="${student.phone} ?: 'Не указано'" class="contact-link"></span>
+                        <div class="edit-group" onclick="showEditModal('phone')"
+                             th:attr="data-current-value=${student.phone ?: ''}">
+                            <span class="edit-text">Изменить</span>
+                            <img src="/images/edit.png" alt="Редактировать" class="edit-icon">
+                            <div class="edit-tooltip">Нажмите, чтобы изменить телефон</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="editLinkModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <form id="editLinkForm" th:action="@{/student/updateContacts}" method="post">
+                        <div class="form-group">
+                            <label id="linkLabel" for="linkInput"></label>
+                            <div class="input-group">
+                                <span id="linkPrefix" class="input-group-text"></span>
+                                <input type="text" class="form-control" id="linkInput" name="linkInput">
+                            </div>
+                        </div>
+                        <input type="hidden" id="linkType" name="linkType">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="info-box right-box">
+                <div class="section-title">Подробная информация</div>
+                <table class="info-table">
+                    <tr>
+                        <td>Фамилия</td>
+                        <td th:text="${student.lastName}"></td>
+                    </tr>
+                    <tr>
+                        <td>Имя</td>
+                        <td th:text="${student.firstName}"></td>
+                    </tr>
+                    <tr>
+                        <td>Отчество</td>
+                        <td th:text="${student.patronymic}"></td>
+                    </tr>
+                    <tr>
+                        <td>Дата рождения</td>
+                        <td th:text="${#temporals.format(student.birthDate, 'dd.MM.yyyy')} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Табельный/регистрационный номер</td>
+                        <td th:text="${student.registrationNumber} ?: '-'"></td>
+                    </tr>
+                    <tr>
+                        <td>Группа</td>
+                        <td th:text="${student.groupName} ?: '-'"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="editFieldModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeFieldModal()">&times;</span>
+            <form id="editFieldForm" th:action="@{/student/updateFields}" method="post">
+                <div class="form-group">
+                    <label id="fieldLabel" for="fieldInput"></label>
+                    <input type="tel" class="form-control" id="fieldInput" name="fieldInput"
+                           placeholder="8 (XXX) XXX-XX-XX" value="8">
+                </div>
+                <input type="hidden" id="fieldType" name="fieldType">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+    <div class="bottom-container">
+        <div class="bottom-box active" data-tab="consultation">
+            <div class="bottom-box-title">Консультация</div>
+        </div>
+        <div class="bottom-box" data-tab="records">
+            <div class="bottom-box-title">Записи</div>
+        </div>
+        <div class="bottom-box" data-tab="notifications">
+            <div class="bottom-box-title">Уведомления</div>
+            <div class="notification-badge" id="unreadCountBadge"
+                 th:text="${unreadCount}"
+                 th:if="${unreadCount > 0}"></div>
+        </div>
+    </div>
+    <div class="content-container">
+        <div class="content-box active" id="consultation-content">
+            <div class="consultation-main-content">
+                <div class="section-title">Мои записи на консультации</div>
+                <div class="consultation-header">
+                    <button class="btn btn-primary" id="registerConsultationBtn">Записаться на консультацию</button>
+                </div>
+                <div th:if="${studentSignups != null and !studentSignups.empty}" class="consultations-table-container">
+                    <table class="consultations-table unique-table">
+                        <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Дата</th>
+                            <th>Время начала</th>
+                            <th>Время окончания</th>
+                            <th>Аудитория</th>
+                            <th>Причина</th>
+                            <th>Действие</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="signup, iter : ${studentSignups}">
+                            <td th:text="${iter.index + 1}"></td>
+                            <td th:text="${signup.consultation.teacher.lastName}"></td>
+                            <td th:text="${signup.consultation.teacher.firstName}"></td>
+                            <td th:text="${signup.consultation.teacher.patronymic}"></td>
+                            <td th:text="${#temporals.format(signup.consultation.consultationDate, 'dd.MM.yyyy')}"></td>
+                            <td th:text="${#temporals.format(signup.consultation.startTime, 'HH:mm')}"></td>
+                            <td th:text="${#temporals.format(signup.consultation.endTime, 'HH:mm')}"></td>
+                            <td th:text="${signup.consultation.room}"></td>
+                            <td th:text="${signup.reason}"></td>
+                            <td>
+                                <button class="btn-delete" th:data-signup-id="${signup.id}">Удалить</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="no-consultations-message" th:unless="${studentSignups != null and !studentSignups.empty}" style="margin-top: 20px;">
+                    <img src="/images/calendar-empty.png" alt="Нет записей" class="empty-icon">
+                    <p>У вас нет записей на консультации</p>
+                </div>
+            </div>
+            <div class="consultation-registration-section" id="consultationRegistration" style="display: none;">
+                <div class="breadcrumb-nav">
+                    <span class="breadcrumb-item back-to-profile" style="cursor:pointer;">Профиль</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item active">Поиск преподавателя</span>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="teacherSearchInput" placeholder="Введите ФИО преподавателя..." class="search-input">
+                </div>
+
+                <div id="teacherResults" class="teacher-results">
+                    <!-- Здесь будут подгружаться преподаватели -->
+                </div>
+            </div>
+            <div class="teacher-consultation-section" id="teacherConsultationSection" style="display: none;">
+                <div class="breadcrumb-nav">
+                    <span class="breadcrumb-item back-to-profile" style="cursor:pointer;">Профиль</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item" id="backToSearch" style="cursor:pointer;">Поиск преподавателя</span>
+                    <span class="breadcrumb-separator">>></span>
+                    <span class="breadcrumb-item active">Консультации преподавателя</span>
+                </div>
+                <h3 id="selectedTeacherName" style="margin-top: 15px;"></h3>
+                <div id="consultationsList">
+                    <!-- Здесь будут подгружаться консультации преподавателя -->
+                </div>
+            </div>
+        </div>
+        <div class="content-box" id="records-content">
+            <div class="consultation-header">
+                <div class="section-title">История моих записей</div>
+            </div>
+            <div class="consultations-table-container" id="archiveTableContainer" style="display: none;">
+                <table class="consultations-table unique-table" id="archiveTable">
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Дата</th>
+                        <th>Время начала</th>
+                        <th>Время окончания</th>
+                        <th>Аудитория</th>
+                        <th>Причина</th>
+                        <th>Посещаемость</th>
+                        <th>Сдача задолженности</th>
+                        <th>Отзыв</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Данные будут загружаться через JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="no-consultations-message" id="noArchiveMessage" style="display: none;">
+                <img src="/images/calendar-empty.png" alt="Нет записей" class="empty-icon">
+                <p>У вас нет завершенных консультаций</p>
+            </div>
+        </div>
+        <div class="content-box" id="notifications-content">
+            <div class="consultation-header">
+                <div class="section-title">Мои уведомления</div>
+                <div class="consultation-header">
+                    <button class="btn btn-primary" id="markAllAsReadBtn">Отметить все как прочитанные</button>
+                </div>
+            </div>
+            <div class="notifications-container">
+                <div th:each="notification : ${notifications}" class="notification" th:classappend="${notification.isRead} ? 'read' : 'unread'">
+                    <div class="notification-content">
+                        <div class="notification-message" th:text="${notification.message}"></div>
+                        <div class="notification-time" th:text="${#temporals.format(notification.createdAt, 'dd.MM.yyyy HH:mm')}"></div>
+                    </div>
+                    <div class="notification-actions" th:unless="${notification.isRead}">
+                        <button class="btn-action mark-as-read-btn" th:attr="data-notification-id=${notification.id}">
+                            Отметить как прочитанное
+                        </button>
+                    </div>
+                </div>
+                <div class="no-notifications-message" th:if="${notifications.empty}">
+                    <img src="/images/bell-empty.png" alt="Нет уведомлений" class="empty-icon">
+                    <p>У вас нет уведомлений</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="registerConsultationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRegisterModal()">&times;</span>
+            <form id="consultationRegisterForm">
+                <div class="form-group">
+                    <label for="registrationReason">Причина записи</label>
+                    <textarea id="registrationReason" name="reason" class="form-control" rows="3" required></textarea>
+                </div>
+                <input type="hidden" id="consultationIdInput">
+                <button type="submit" class="btn btn-primary">Записаться</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

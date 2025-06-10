@@ -1,0 +1,1729 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.no-scroll-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.login-header-text {
+    text-align: center;
+    font-size: 18px;
+    color: #003883;
+    font-weight: bold;
+    margin-top: 30px;
+}
+.login-form-rectangle-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.login-form-rectangle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #DAEAFF;
+    border: 2px solid #003883;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 90%;
+    width: 300px;
+}
+.login-form-rectangle:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+.login-form-logo {
+    width: 100px;
+    height: auto;
+}
+.login-form-header {
+    font-size: 17px;
+    color: #003883;
+    font-weight: bold;
+    margin: 30px;
+}
+.login-form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10px;
+}
+.login-form-group-label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #003883;
+}
+.login-form-group-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #003883;
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: outline 0.0s ease;
+}
+.login-form-group-input:focus {
+    outline: 2px solid #003883;
+}
+.error-field-message {
+    color: #d32f2f; /* Красный цвет */
+    font-size: 12px;
+    margin-top: 4px;
+    height: 16px; /* Фиксированная высота, чтобы не прыгало */
+    visibility: hidden; /* Скрыто по умолчанию */
+}
+.error-field-message:not(:empty) {
+    visibility: visible; /* Показываем, если есть текст */
+}
+.error-message-login {
+    color: #d32f2f; /* Красный цвет для ошибки */
+    font-size: 14px;
+    text-align: center;
+    margin: 5px 0;
+    height: 18px; /* Фиксированная высота, чтобы не было скачков */
+    visibility: hidden; /* По умолчанию скрыто, но место занимает */
+}
+.error-message-login:not(:empty) {
+    visibility: visible; /* Показываем только когда есть содержимое */
+}
+.login-form-button {
+    margin-top: 30px;
+    padding: 10px 50px;
+    border: 1px solid #003883;
+    background-color: #00913A;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    transition: background-color 0.3s ease, border 0.3s ease;
+}
+.login-form-button:hover {
+    background-color: #007A30;
+}
+.login-cookie-text {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 30px;
+    width: 90%;
+}
+.page-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    background-color: #DAEAFF;
+    border-bottom: 1px solid #E0E0E0;
+    position: relative;
+}
+.header-left, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+.header-center {
+    flex: 1;
+    text-align: center;
+}
+.header-right {
+    justify-content: flex-end;
+}
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+.menu-icon {
+    width: 25px;
+    height: auto;
+}
+.logo {
+    height: 70px;
+    width: auto;
+}
+.left-menu {
+    display: flex;
+    gap: 20px;
+}
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.instruction-menu {
+    position: relative;
+    cursor: pointer;
+}
+.menu-text {
+    font-size: 14px;
+    color: #003883;
+}
+.arrow-icon {
+    width: 15px;
+    height: auto;
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% - 5px);
+    background-color: #F2F8FF;
+    border: 1px solid #003883;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    min-width: 150px;
+    z-index: 1000;
+    margin-top: 5px;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition-delay: 0.1s;
+}
+.dropdown-menu a {
+    color: #003883;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+.dropdown-menu a:hover {
+    background-color: #DAEAFF;
+}
+.instruction-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #F2F8FF;
+    border: 1px solid #003883;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    min-width: 200px;
+    z-index: 1000;
+    margin-top: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.instruction-menu:hover .instruction-dropdown {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+.dropdown-item {
+    color: #003883;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+.dropdown-item:hover {
+    background-color: #DAEAFF;
+}
+.university-text {
+    font-size: 16px;
+    color: #003883;
+    font-weight: bold;
+}
+.profile-menu {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+.profile-menu:hover .dropdown-menu {
+    display: block;
+    transition-delay: 0s;
+}
+.profile-trigger {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+.profile-pic[src="/images/user.png"] {
+    background: #f0f0f0;
+}
+.settings-icon {
+    width: 25px;
+    height: auto;
+}
+.centered-text-lk {
+    text-align: center;
+    padding: 25px 0px 0px;
+    margin: 0 auto;
+    width: 100%;
+    font-size: 20px;
+    color: #003883;
+    font-weight: bold;
+}
+.user-info-container {
+    display: flex;
+    justify-content: center;
+    margin: 25px auto 15px;
+    max-width: 1200px;
+    gap: 15px;
+    align-items: stretch;
+    padding: 0 15px;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+.alert {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid;
+}
+.alert-danger {
+    color: red;
+    border-color: red;
+}
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+.right-column {
+    width: 100%;
+    display: flex;
+}
+.info-box {
+    background-color: #F2F8FF;
+    border: 1px solid #003883;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 15px;
+    flex-grow: 1;
+    box-sizing: border-box;
+}
+.top-left-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #003883;
+    width: 100%;
+    text-align: center;
+}
+.profile-image-container {
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+}
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+}
+.upload-photo-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 10px 0;
+}
+.upload-photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #0066cc;
+    cursor: pointer;
+    font-size: 14px;
+}
+.upload-icon {
+    width: 14px;
+    height: 14px;
+}
+.photo-tooltip {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -10px);
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    width: max-content;
+    max-width: 250px;
+    text-align: center;
+    z-index: 10;
+    white-space: nowrap;
+}
+.photo-info {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+    text-align: center;
+}
+.photo-tooltip:after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent;
+}
+.upload-photo-wrapper:hover .photo-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 2px);
+}
+.contacts-box {
+    display: flex;
+    flex-direction: column;
+}
+.contact-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    justify-content: space-between;
+}
+.contact-left-group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+.contact-icon {
+    width: 20px;
+    height: auto;
+    margin-right: 8px;
+}
+.contact-name {
+    font-weight: bold;
+    min-width: 70px;
+    font-size: 14px;
+}
+.contact-right-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    min-width: 0;
+}
+.contact-link {
+    color: #0066cc;
+    text-decoration: none;
+    margin-right: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    font-size: 14px;
+}
+.contact-link:hover {
+    text-decoration: underline;
+}
+.edit-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+.edit-text {
+    font-size: 12px;
+    color: #0066cc;
+    background-color: #f0f8ff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid #cce0ff;
+    transition: all 0.2s ease;
+}
+.edit-icon {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+.edit-tooltip {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    width: max-content;
+    max-width: 200px;
+    text-align: center;
+    z-index: 10;
+    white-space: nowrap;
+    margin-top: 10px;
+}
+.edit-tooltip:after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent;
+}
+.edit-group:hover .edit-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+.edit-group:hover .edit-text {
+    background-color: #e0f0ff;
+    color: #0052a3;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow: hidden; /* Убираем скролл на фоне */
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
+    overflow-y: auto; /* Только вертикальный скролл */
+    position: relative;
+    box-sizing: border-box; /* Учитываем padding в ширине */
+}
+/* Заголовок модального окна */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative;
+    padding-right: 30px; /* Для крестика */
+}
+
+.modal-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    color: #003883;
+    font-size: 1.1rem;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1; /* Чтобы был поверх заголовка */
+    margin-left: auto; /* Сдвигаем вправо */
+}
+.close:hover {
+    color: black;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+.input-group-text {
+    padding: 8px 12px;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+    font-size: 14px;
+}
+.form-control {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+    flex-grow: 1;
+    font-size: 14px;
+}
+.checkbox-wrapper {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-label {
+    margin-left: 5px;
+    margin-bottom: 0;
+}
+.btn {
+    padding: 8px 16px;
+    background-color: #00913A;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.btn:hover {
+    background-color: #0052a3;
+}
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+.info-table tr {
+    border-bottom: 1px solid #eee;
+}
+.info-table tr:last-child {
+    border-bottom: none;
+}
+.info-table td {
+    padding: 15px 5px;
+    font-size: 15px;
+}
+.info-table td:first-child {
+    width: 60%;
+    font-weight: bold;
+}
+.table-data-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+}
+.table-edit-group .edit-tooltip {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    width: max-content;
+    max-width: 200px;
+    text-align: center;
+    z-index: 10;
+    white-space: nowrap;
+    margin-top: 10px;
+}
+.table-edit-group .edit-tooltip:after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent;
+}
+.table-edit-group:hover .edit-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+.table-edit-group {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+.bottom-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px auto;
+    max-width: 1200px;
+    gap: 10px;
+    padding: 0 15px;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+.bottom-box {
+    background-color: #F2F8FF;
+    border: 1px solid #003883;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex: 1;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.bottom-box.active {
+    background-color: #003883;
+    color: white;
+}
+.bottom-box-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #003883;
+    transition: all 0.3s ease;
+}
+.bottom-box.active .bottom-box-title {
+    color: white;
+}
+.content-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px auto;
+    max-width: 1200px;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+.content-box {
+    display: none;
+    width: 100%;
+    background-color: #F2F8FF;
+    border: 1px solid #003883;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+.content-box.active {
+    display: block;
+}
+/* Стили для таблицы консультаций */
+.consultations-table-container {
+    overflow-x: auto;
+    box-shadow: 0 4px 12px rgba(0, 56, 131, 0.1);
+    border-radius: 8px;
+}
+
+.consultations-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: #F2F8FF;
+    border: 1px solid #003883;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.consultations-table th {
+    background-color: #003883;
+    color: white;
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.consultations-table td {
+    padding: 12px 15px;
+    font-size: 15px;
+    border-bottom: 1px solid #DAEAFF;
+    color: #333;
+    text-align: center;
+    vertical-align: middle;
+    transition: background-color 0.2s ease;
+}
+
+.consultations-table tr:nth-child(even) {
+    background-color: #E6F2FF;
+}
+
+.consultations-table tr:last-child td {
+    border-bottom: none;
+}
+
+.consultations-table tr:hover {
+    background-color: #d0e3ff;
+}
+
+/* Дополнительные элементы стилизации */
+.consultations-table th:first-child {
+    border-top-left-radius: 7px;
+}
+
+.consultations-table th:last-child {
+    border-top-right-radius: 7px;
+}
+
+.consultations-table tr:first-child td:first-child {
+    border-top-left-radius: 7px;
+}
+
+.consultations-table tr:first-child td:last-child {
+    border-top-right-radius: 7px;
+}
+
+.consultations-table tr:last-child td:first-child {
+    border-bottom-left-radius: 7px;
+}
+
+.consultations-table tr:last-child td:last-child {
+    border-bottom-right-radius: 7px;
+}
+.archive-container {
+    position: relative;
+}
+.no-consultations-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.no-consultations-message p {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #003883;
+}
+
+.consultation-registration-section {
+    padding: 0 15px; /* Такие же отступы, как у content-container */
+    box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
+}
+
+.no-records-message p {
+    color: #dc3545;
+    font-size: 16px;
+}
+.breadcrumb-nav {
+    margin: 15px 0;
+    font-size: 16px;
+    color: #555;
+}
+.breadcrumb-item {
+    font-weight: 500;
+}
+.breadcrumb-item.active {
+    font-weight: bold;
+}
+.breadcrumb-separator {
+    margin: 0 5px;
+}
+
+.search-container {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.teacher-results {
+    margin-top: 20px;
+}
+
+.teacher-results {
+    margin-top: 15px;
+}
+.consultation-header {
+    display: block;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+#registerConsultationBtn {
+    display: block; /* Делает кнопку блочной */
+    margin: 0 auto; /* Автоматические отступы по бокам (центрирует) */
+    width: fit-content; /* Ширина по содержимому */
+}
+.consultations-table th:nth-child(1),
+.consultations-table td:nth-child(1) {
+    display: none;
+}
+.notifications-container {
+    margin-top: 20px;
+}
+.notification {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.notification-content {
+    flex-grow: 1;
+}
+
+.notification-message {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: #666;
+}
+
+.notification-actions {
+    margin-left: 15px;
+}
+
+.no-notifications-message {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.no-notifications-message .empty-icon {
+    width: 80px;
+    opacity: 0.5;
+    margin-bottom: 15px;
+}
+
+.no-notifications-message p {
+    color: #666;
+    font-size: 16px;
+}
+.btn-action {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-right: 5px;
+    transition: all 0.2s;
+}
+.mark-as-read-btn {
+    white-space: nowrap; /* Запрещает перенос текста */
+    overflow: hidden; /* Скрывает текст, который не помещается (на всякий случай) */
+    text-overflow: ellipsis; /* Добавляет многоточие, если текст не помещается (опционально) */
+    background-color: #DAEAFF;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+.btn-edit, .btn-delete {
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #ed2502;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #45a049;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+.btn-signup {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-signup:hover {
+    background-color: #45a049;
+}
+.update-btn {
+    background-color: #00913A;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100px;
+}
+
+.update-btn:hover {
+    background-color: #45a049;
+}
+
+.hide-btn {
+    background-color: #f0ad4e;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100px;
+}
+
+.hide-btn:hover {
+    background-color: #ec971f;
+}
+.signup-btn {
+    margin-top: 5px;
+    transition: all 0.3s ease;
+}
+.signup-btn:disabled {
+    opacity: 0.65;
+}
+.breadcrumb-container {
+    max-width: 1200px;
+    margin: 15px auto 0;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+    padding: 8px 0;
+}
+.breadcrumb-item {
+    color: #0066cc;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.breadcrumb-item:hover {
+    color: #003883;
+    text-decoration: underline;
+}
+.breadcrumb-item.active {
+    color: #003883;
+    font-weight: bold;
+    pointer-events: none;
+}
+.breadcrumb-separator {
+    margin: 0 8px;
+    color: #888;
+}
+.student-results {
+    margin-top: 15px;
+}
+.no-results {
+    color: #888;
+    font-style: italic;
+}
+/* Сообщения об ошибках и пустых списках */
+.no-results, .no-consultations, .error-message {
+    padding: 15px;
+    text-align: center;
+    color: #666;
+}
+
+.error-message {
+    color: #d9534f;
+}
+.full-message {
+    color: #dc3545;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.error-message {
+    color: #fd7e14;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    display: inline-block;
+    margin-top: 5px;
+}
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    opacity: 0.3;
+    margin: 0 auto 15px;
+}
+.teacher-card, .student-card {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.teacher-card:hover, .student-card:hover {
+    background-color: #f0f0f0;
+}
+.teacher-info {
+    font-size: 16px;
+}
+.consultation-card {
+    border: 1px solid #cce5ff;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #eaf4ff;
+    border-radius: 4px;
+}
+/* Стили для блока консультаций */
+.consultation-block {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+.consultation-info p {
+    margin: 5px 0;
+}
+.feedback-textarea {
+    width: 100%; /* Установите ширину на 100% родительского элемента */
+    min-width: 200px; /* Установите минимальную ширину */
+    height: 50px; /* Установите высоту по умолчанию, если нужно */
+}
+.attendance-select, .feedback-textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.debt-status-select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.notification.unread {
+    background-color: #DAEAFF;
+    border-left: 4px solid #003883;
+}
+.notification.read {
+    background-color: #F2F8FF;
+    border-left: 4px solid #DAEAFF;
+}
+/* Специфичные стили для формы консультации */
+#consultationForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+#consultationForm .form-group {
+    margin-bottom: 15px;
+}
+#consultationForm label {
+    display: block;
+    margin-bottom: 8px;
+    color: #003883;
+    font-weight: bold;
+    font-size: 14px;
+}
+#consultationForm .form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #003883;
+    border-radius: 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+#consultationForm select.form-control {
+    appearance: none;
+    background-image: url("/images/downarrow.png");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 35px;
+}
+#consultationForm input[type="time"] {
+    padding: 10px 12px;
+}
+#consultationForm input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+    padding: 0;
+    margin: 0;
+}
+#consultationForm button[type="submit"] {
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #00913A;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+/* Специфичные стили для формы консультации */
+#oneTimeConsultationForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+#oneTimeConsultationForm .form-group {
+    margin-bottom: 15px;
+}
+#oneTimeConsultationForm label {
+    display: block;
+    margin-bottom: 8px;
+    color: #003883;
+    font-weight: bold;
+    font-size: 14px;
+}
+#oneTimeConsultationForm .form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #003883;
+    border-radius: 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+#oneTimeConsultationForm select.form-control {
+    appearance: none;
+    background-image: url("/images/downarrow.png");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 35px;
+}
+#oneTimeConsultationForm input[type="time"] {
+    padding: 10px 12px;
+}
+#oneTimeConsultationForm input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+    padding: 0;
+    margin: 0;
+}
+#oneTimeConsultationForm button[type="submit"] {
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #00913A;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.alert-success {
+    color: green;
+    border-color: green;
+}
+.alert-warning {
+    color: orange;
+    border-color: orange;
+}
+.consultation-section {
+    margin-bottom: 30px;
+}
+
+.consultation-section h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.template-consultations {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border-left: 4px solid #003883;
+}
+
+.template-consultations h4 {
+    margin-bottom: 15px;
+    color: #495057;
+}
+
+.template-consultations .consultations-table {
+    margin-top: 10px;
+}
+
+/* Добавляем стили для кнопки анализа и заголовка */
+    .student-header, .teacher-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+.analysis-content {
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    min-width: 200px;
+    margin: 10px;
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.chart-container {
+    margin-top: 30px;
+    height: 400px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-container label {
+    margin-left: 8px;
+    margin-top: 5px;
+}
+
+.debt-status-cell {
+    min-width: 180px;
+    vertical-align: middle;
+}
+
+.stats-header {
+    margin: 20px 0 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.radio-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.radio-wrapper input[type="radio"] {
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    .left-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #DAEAFF;
+        width: 100%;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        flex-direction: column;
+        gap: 15px;
+        z-index: 100;
+    }
+    .left-menu .instruction-menu {
+        position: static;
+        width: fit-content;
+    }
+    .left-menu .instruction-dropdown {
+        position: fixed;
+        top: auto;
+        width: auto;
+        min-width: 200px;
+        max-width: calc(100% - 40px);
+        margin-top: 5px;
+        left: 15px;
+    }
+    .header-center {
+        display: none;
+    }
+    .header-left, .header-right {
+        gap: 10px;
+    }
+    .header-left {
+        flex: none;
+    }
+    .user-name {
+        display: none;
+    }
+    .logo {
+        height: 40px;
+    }
+    .profile-pic {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+    }
+    .dropdown-menu {
+        right: -50px;
+    }
+    .settings-icon {
+        width: 20px;
+    }
+    .centered-text-lk {
+        font-size: 18px;
+        padding: 15px 0 0;
+    }
+    .profile-image {
+        width: 100px;
+        height: 100px;
+    }
+    .upload-photo {
+        font-size: 13px;
+    }
+    .edit-text, .table-edit-group .edit-text {
+        display: none;
+    }
+    .edit-group {
+        margin-left: 4px;
+    }
+    .info-table td {
+        padding: 8px 5px;
+        font-size: 13px;
+    }
+    .info-table td:first-child {
+        font-size: 14px;
+    }
+    .table-data-wrapper {
+        flex-wrap: wrap;
+    }
+    .table-edit-group {
+        margin-left: 0;
+    }
+    .table-edit-group .edit-tooltip {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .table-edit-group .edit-tooltip:after {
+        right: auto;
+        left: 50%;
+        margin-left: -5px;
+    }
+    .bottom-box-title {
+        font-size: 15px;
+    }
+    .breadcrumb {
+        font-size: 13px;
+        padding: 6px 0;
+    }
+    .breadcrumb-separator {
+        margin: 0 5px;
+    }
+    .btn-action {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    .consultations-table-container {
+        padding: 0 10px;
+        box-shadow: none;
+    }
+
+    .consultations-table {
+        display: block;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+    }
+
+    .consultations-table thead {
+        display: none;
+    }
+
+    .consultations-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .consultations-table tr {
+        display: flex;
+        flex-direction: column;
+        background-color: #F2F8FF;
+        border: 1px solid #003883;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 0;
+        box-shadow: 0 2px 4px rgba(0, 56, 131, 0.1);
+    }
+
+    .consultations-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: calc(100% - 20px); /* Добавляем отступ справа */
+        padding: 8px 15px 8px 10px; /* Увеличиваем правый padding */
+        border-bottom: 1px solid #DAEAFF !important;
+        text-align: right;
+        position: relative;
+        color: #333;
+    }
+
+    .consultations-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #003883;
+        margin-right: 15px;
+        text-align: left;
+        flex: 1;
+        padding-right: 10px; /* Добавляем отступ между меткой и значением */
+    }
+
+    /* Специфичные стили для кнопок в мобильной версии */
+    .consultations-table .btn-action {
+        width: 100%;
+        margin-top: 5px;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    /* Убираем зебру в мобильной версии */
+    .consultations-table tr:nth-child(even) {
+        background-color: #F2F8FF;
+    }
+
+    /* Улучшаем hover-эффект */
+    .consultations-table tr:hover {
+        background-color: #E6F2FF;
+    }
+
+    /* Увеличиваем отступы для значений */
+    .consultations-table td:not([data-label=""]) {
+        padding-right: 20px;
+    }
+
+    /* Для кнопок оставляем стандартные отступы */
+    .consultations-table td .btn-action {
+        padding-right: 10px;
+    }
+    .modal-content {
+        margin: 10% auto;
+        padding: 15px;
+        width: 95%;
+    }
+
+    .modal-title {
+        font-size: 1.1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 70%;
+    }
+
+    #consultationForm button[type="submit"] {
+        padding: 10px;
+        font-size: 15px;
+    }
+    #oneTimeConsultationForm button[type="submit"] {
+        padding: 10px;
+        font-size: 15px;
+    }
+    .feedback-textarea {
+        min-width: 100%; /* Полная ширина на мобильных устройствах */
+        height: 40px; /* Меньшая высота на мобильных устройствах */
+    }
+}
+@media (min-width: 769px) {
+    .left-menu {
+        display: flex !important;
+    }
+    .user-info-container {
+        flex-direction: row;
+    }
+    .left-column {
+        width: 35%;
+    }
+    .right-column {
+        width: 65%;
+    }
+    .bottom-container {
+        flex-direction: row;
+    }
+    .modal-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        max-width: 80%;
+        text-align: center;
+    }
+    .feedback-textarea {
+        min-width: 200px; /* Ширина для больших экранов */
+        height: 50px; /* Высота для больших экранов */
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        margin: 5% auto;
+        padding: 12px;
+    }
+
+    .modal-title {
+        font-size: 1.1rem;
+    }
+
+    .close {
+        font-size: 24px;
+    }
+
+    #consultationForm .form-control {
+        padding: 8px 10px;
+    }
+    #oneTimeConsultationForm .form-control {
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .login-form-rectangle {
+        width: 100%;
+        padding: 15px;
+    }
+    .login-header-text {
+        font-size: 14px;
+    }
+    .profile-image {
+        width: 80px;
+        height: 80px;
+    }
+    .upload-photo {
+        font-size: 12px;
+    }
+    .contact-name {
+        min-width: 60px;
+        font-size: 13px;
+    }
+    .contact-link {
+        font-size: 12px;
+    }
+    .info-table td {
+        font-size: 12px;
+    }
+    .info-table td:first-child {
+        font-size: 13px;
+    }
+    .table-edit-group {
+        margin-left: auto;
+    }
+    .info-table td {
+        padding: 6px 3px;
+    }
+    .bottom-box-title {
+        font-size: 14px;
+    }
+    .breadcrumb {
+        font-size: 12px;
+    }
+    .consultations-table td {
+        padding: 6px 12px 6px 8px; /* Адаптируем для очень узких экранов */
+    }
+
+    .consultations-table td::before {
+        padding-right: 8px;
+    }
+
+    .consultations-table .btn-action {
+        font-size: 13px;
+        padding: 6px;
+    }
+}
