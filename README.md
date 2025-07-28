@@ -47,8 +47,8 @@
 |                 | Сетевое подключение |
 | **Клиент**      | Любое устройство с современным веб-браузером |
 
-### Диаграмма компонентов
-![Диаграмма компонентов](docs/images/component-diagram.png)
+### Структура проекта
+![Развертывание компонентов](https://raw.githubusercontent.com/dashya19/university-consultations/main/imagefiles/imagefile1.png)
 
 ## Технологический стек
 
