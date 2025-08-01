@@ -116,18 +116,3 @@
 | Браузер ↔ Интернет | HTTP/HTTPS |
 | Веб-сервер ↔ Интернет | HTTP/HTTPS |
 | Веб-сервер ↔ БД | JDBC |
-
-### Структура базы данных
-
-Схема БД включает сущности:
-- Пользователи
-- Консультации
-- Записи студентов
-- Архив консультаций
-
-![Схема таблиц БД](https://raw.githubusercontent.com/dashya19/university-consultations/main/imagefiles/ДиаграммаКлассов.png)
-*Рисунок 3 - Реляционная модель базы данных*
-
-### Структура проекта
-![Развертывание компонентов](https://raw.githubusercontent.com/dashya19/university-consultations/main/imagefiles/imagefile1.png)
-*Рисунок 4 - Структура проекта*
